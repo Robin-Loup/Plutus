@@ -1,28 +1,28 @@
 # Plutus
 
-##Request 0
-###Transaction
+## Request 0
+### Transaction
 Un texte libre <0>.
 Une date correspondant à l'instant où la transaction a eu lieu <0>.
 Des étiquettes <0>. Il s'agit de mots-clés qui pourront nous permettre de classer et chercher plus rapidement la transaction.
 Un montant <0>
 Il doit être possible de créer une nouvelle transaction de zéro ou de copier une transaction existante que l'on modifie <0>.
 
- ###Etiquette
+ ### Etiquette
  L'utilisateur peut attribuer des mots-clés libres comme étiquettes <0> 
  
- ###Stockage et sauvegarde du carnet de comptes
+ ### Stockage et sauvegarde du carnet de comptes
  Le carnet de comptes sera stocké sous la forme d'une base de données SQLite <0> qui pourra être exploitée directement ou en passant par un ORM (tel que Room).
  
  
- ###Création et choix de carnets de compte
+ ### Création et choix de carnets de compte
  il doit être possible de choisir le carnet courant ainsi que de créer, dupliquer ou supprimer un carnet existant <0>
  
- ###Création, visualisation et édition de transaction
+ ### Création, visualisation et édition de transaction
  Il doit être nécessaire de pouvoir écrire du texte libre concernant la transaction <0>
  ajouter/modifier le montant <0>, ainsi que des étiquettes <0>. 
  
- ###Recherche de transactions et rapports
+ ### Recherche de transactions et rapports
  Les transactions doivent être recherchables par critères que sont l'étiquette <0>
  Pour nous aider, on peut visualiser une liste de toutes les étiquettes utilisées dans le carnet <0>
  Il est possible d'enregistrer des critères types (e.g. transactions de dépenses alimentaires avec l'étiquette -  food réalisées en 2022 à moins de 2 km de Champs-sur-Marne portant sur un montant inférieur à 20 euros) afin de relancer rapidement des recherches <0>.
@@ -31,14 +31,14 @@ La recherche doit mener à l'obtention de la liste des transactions mais égalem
 
 Somme des montants des transactions sélectionnées par la recherche (ce qui permet d'obtenir le solde pour un compte) <0>
 
-###Docs
+### Docs
 Le projet fera l'objet d'un rendu comprenant le code-source, une documentation PDF utilisateur et d'une documentation PDF développeur. Il vous sera demandé aussi d'inclure à la racine un fichier README (explications générales de compilation, bugs éventuels...) ainsi que LICENSE indiquant la licence de votre projet (qui devra être open-source). Vous devrez également pour chaque membre du groupe écrire un rapport individuel de 5 pages dans lequel vous décrirez le travail personnel apporté, les difficultés rencontrées et solutions apportées pour les surmonter.
 
-##Request 1
-###Transaction
+## Request 1
+### Transaction
 ajout des balises Markdown <1>.
 
-###Budget
+### Budget
 Définir un budget pour une étiquette donnée <1>. Un budget est un objectif de dépenses ou de revenus pour une certaine période (semaine, mois, année).
 
 ###Stockage et sauvegarde du carnet de comptes
