@@ -57,6 +57,31 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         // closing our database
         db.close()
     }
+    fun addTransaction(tr: Transaction){
+
+        // below we are creating
+        // a content values variable
+        val values = ContentValues()
+
+        // we are inserting our values
+        // in the form of key-value pair
+        values.put(NAME_TAG, tr.tags().toString())
+        values.put(TXT, tr.text())
+        values.put(MONTANT, tr.montant())
+
+        // here we are creating a
+        // writable variable of
+        // our database as we want to
+        // insert value in our database
+        val db = this.writableDatabase
+
+        // all values are inserted into database
+        db.insert(TABLE_NAME, null, values)
+
+        // at last we are
+        // closing our database
+        db.close()
+    }
  
     // below method is to get
     // all data from our database

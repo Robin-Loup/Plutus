@@ -11,16 +11,13 @@ class Transaction {
     private lateinit var date: LocalDateTime
 
 
-    constructor(text: String, montant: Int, vararg tags: Etiquette.Tag) {
+    constructor(text: String, montant: Int, tags: ArrayList<Etiquette.Tag>) {
         if (montant < 0) {
             println("Montant peut pas etre negatif")
             return
         }
         Objects.requireNonNull(tags)
-        list= ArrayList()
-        for (t in tags) {
-            list!!.add(t)
-        }
+        list=tags
         date = now()
         this.text = text
     }
@@ -47,7 +44,15 @@ class Transaction {
     fun addTag(t: Etiquette.Tag) {
         list!!.add(t)
     }
-
+    fun tags() : ArrayList<Etiquette.Tag>{
+        return tags()
+    }
+    fun montant(): Int {
+        return montant
+    }
+    fun text() : String{
+        return text
+    }
     override fun toString(): String {
         return "$text, $montant €, for : $list the $date)"
     }
