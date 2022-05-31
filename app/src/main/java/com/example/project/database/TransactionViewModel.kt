@@ -8,7 +8,6 @@ import com.example.project.database.TransactionRepository
 import kotlinx.coroutines.launch
 
 class TransactionViewModel(private val repository: TransactionRepository) : ViewModel() {
-
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
