@@ -23,6 +23,9 @@ interface TransactionDAO {
     @Query("DELETE FROM transactions WHERE idTransaction= :id")
     suspend fun deleteTr(id :Int)
 
+    @Query("DELETE FROM transactions")
+    suspend fun deleteAll()
+
     @Update(entity = Transaction::class, onConflict = OnConflictStrategy.REPLACE)
     fun updateTr(transaction:Transaction)
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.project.ui.theme.ProjectTheme
+import java.time.LocalDateTime
 
 
 class MainActivity : ComponentActivity() {
@@ -157,8 +158,7 @@ fun MainView(){
 }
 @Composable
 fun Greeting(name: String) {
-    var list= arrayListOf<Etiquette.Tag>(Etiquette.Tag.Food,Etiquette.Tag.Clothes)
-    var tr=Transaction("test",15,list)
+    var tr = Transaction(0,0,"test",10, LocalDateTime.now(),arrayListOf<Etiquette.Tag>(Etiquette.Tag.Food))
 
     Text(text = "$tr")
 
