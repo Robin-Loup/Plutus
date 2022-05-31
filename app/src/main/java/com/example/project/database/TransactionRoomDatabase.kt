@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.Transaction
 import com.example.project.TransactionDAO
+import kotlinx.coroutines.CoroutineScope
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
 @Database(entities = arrayOf(Transaction::class), version = 1, exportSchema = false)
@@ -19,7 +20,9 @@ abstract class TransactionRoomDatabase : RoomDatabase(){
         @Volatile
         private var INSTANCE: TransactionRoomDatabase? = null
 
-        fun getDatabase(context: Context): TransactionRoomDatabase {
+        fun getDatabase(context: Context,
+                        scope: CoroutineScope
+        ): TransactionRoomDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE ?: synchronized(this) {
