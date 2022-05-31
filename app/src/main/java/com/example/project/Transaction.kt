@@ -1,19 +1,39 @@
 package com.example.project
+
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 import java.util.*
 import kotlin.collections.ArrayList
 
-data class Transaction (val carnet : Int, var text: String, var montant: Int, var tags: ArrayList<Etiquette.Tag>){
-    private lateinit var date: LocalDateTime
+@Entity(tableName = "transaction_table")
+data class Transaction(
+    @ColumnInfo(name = "carnet") val carnet: Int,
+    @ColumnInfo(name = "text") var text: String,
+    @ColumnInfo(name = "montant") var montant: Int,
+    var tags: ArrayList<Etiquette.Tag>
+) {
 
-    constructor(old: Transaction) : this(old.carnet,old.text,old.montant,old.tags)
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "idTransaction")
+    var id: Int = 0
 
-    fun date() : LocalDateTime{
+    @ColumnInfo(name = "date")
+    private var date: LocalDateTime = now()
+
+    constructor(old: Transaction) : this(old.carnet, old.text, old.montant, old.tags)
+
+    fun date(): LocalDateTime {
         return date
     }
+
     override fun toString(): String {
-        return "from $carnet -> $text, $montant €, for : $tags the $date)"
+        return "$text, $montant €, for : $tags the $date)"
     }
 }
+
 
