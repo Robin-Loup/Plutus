@@ -1,10 +1,12 @@
 package com.example.project
 
 import TransactionViewModel
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -15,8 +17,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.project.database.TransactionRepository
-import com.example.project.database.TransactionRoomDatabase
 import com.example.project.ui.theme.ProjectTheme
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
@@ -24,30 +24,22 @@ import java.time.LocalDateTime.now
 
 class MainActivity : ComponentActivity() {
     private val newActivityRequestCode = 1
-//    private val transactionViewModel : TransactionViewModel by viewModels {
-//        TransactionViewModelFactory((application as PlutusApp).repository)
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-//        transactionViewModel.allTransactions.observe( this){ transactions->
-//            transactions.let { adapter }
-//        }
         setContent {
-            lateinit var database : TransactionRoomDatabase
-            val transactionRepository by lazy {
-                TransactionRepository ( transactionDAO = database.TransactionDao())
-            }
-            val viewModel = TransactionViewModel(transactionRepository)
+            var plutus=PlutusApp()
+//            private val viewModel : TransactionViewModel by viewModels{
+//
+//            }
             ProjectTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainView(viewModel)
+                    MainView(plutus)
                     Row() {
                         //Greeting("Android")
                     }
@@ -56,8 +48,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+fun provide(context: Context) {
+
+
+}
 @Composable
-fun addTagButtons(viewModel: TransactionViewModel) {
+fun addTagButtons(viewModel: PlutusApp) {
     // Variables to create new transaction
     var list by remember { mutableStateOf(arrayListOf<Etiquette.Tag>()) }
     val context=LocalContext.current
@@ -146,7 +143,7 @@ fun addTagButtons(viewModel: TransactionViewModel) {
                     if(valMontant<0) Toast.makeText(context,"Montant incorrect",Toast.LENGTH_SHORT).show()
                     else{
                         var tr=Transaction(0,0,descText.text,valMontant,now() ,list)
-                        viewModel.insert(tr)
+                        viewModel.repository.insert(tr)
 
                         list.clear()
                         tagText.text.removeRange(0,tagText.text.length)
@@ -164,7 +161,7 @@ fun addTagButtons(viewModel: TransactionViewModel) {
     }
 }
 @Composable
-fun MainView(viewModel: TransactionViewModel) {
+fun MainView(viewModel: PlutusApp) {
     Column(){
         addTagButtons(viewModel)
 

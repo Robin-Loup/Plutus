@@ -1,5 +1,8 @@
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.*
+import com.example.project.MainActivity
+import com.example.project.PlutusApp
 import com.example.project.Transaction
 import com.example.project.database.TransactionRepository
 import com.example.project.database.TransactionRoomDatabase
@@ -9,11 +12,11 @@ class TransactionViewModel(private val repository: TransactionRepository) : View
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
-
     val allTransactions: LiveData<List<Transaction>> = repository.allTransactions.asLiveData()
     fun insert(transaction: Transaction) = viewModelScope.launch {
         repository.insert(transaction)
     }
+
 }
 
 class TransactionViewModelFactory(private val repository: TransactionRepository) : ViewModelProvider.Factory {

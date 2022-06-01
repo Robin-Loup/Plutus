@@ -15,7 +15,7 @@ class TransactionRepository(private val transactionDAO: TransactionDAO) {
     // off the main thread.
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(transaction: Transaction) {
+    fun insert(transaction: Transaction) {
         transactionDAO.insertTr(transaction)
     }
 }

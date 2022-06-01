@@ -15,4 +15,5 @@ class PlutusApp : Application() {
     // rather than when the application starts
     val database by lazy { TransactionRoomDatabase.getDatabase(this,applicationScope) }
     val repository by lazy { TransactionRepository(database.TransactionDao()) }
+
 }

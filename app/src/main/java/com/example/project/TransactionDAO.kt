@@ -18,7 +18,7 @@ interface TransactionDAO {
     fun getAllTr(): Flow<List<Transaction>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTr(transaction: Transaction)
+    fun insertTr(transaction: Transaction)
 
     @Query("DELETE FROM transactions WHERE idTransaction= :id")
     suspend fun deleteTr(id :Int)
