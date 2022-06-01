@@ -1,6 +1,6 @@
 package com.example.project
 
-import android.R.attr.singleLine
+import TransactionViewModel
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -15,22 +15,39 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.project.database.TransactionRepository
+import com.example.project.database.TransactionRoomDatabase
 import com.example.project.ui.theme.ProjectTheme
 import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 
 
 class MainActivity : ComponentActivity() {
+    private val newActivityRequestCode = 1
+//    private val transactionViewModel : TransactionViewModel by viewModels {
+//        TransactionViewModelFactory((application as PlutusApp).repository)
+//    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+//        transactionViewModel.allTransactions.observe( this){ transactions->
+//            transactions.let { adapter }
+//        }
         setContent {
+            lateinit var database : TransactionRoomDatabase
+            val transactionRepository by lazy {
+                TransactionRepository ( transactionDAO = database.TransactionDao())
+            }
+            val viewModel = TransactionViewModel(transactionRepository)
             ProjectTheme {
                 // A surface container using the 'background' color from the theme
-                MainView()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainView()
+                    MainView(viewModel)
                     Row() {
                         //Greeting("Android")
                     }
@@ -40,14 +57,13 @@ class MainActivity : ComponentActivity() {
     }
 }
 @Composable
-fun addTagButtons(){
+fun addTagButtons(viewModel: TransactionViewModel) {
     // Variables to create new transaction
     var list by remember { mutableStateOf(arrayListOf<Etiquette.Tag>()) }
     val context=LocalContext.current
     var tagText by remember { mutableStateOf(TextFieldValue("")) }
     var descText by remember { mutableStateOf(TextFieldValue("")) }
     var montant by remember { mutableStateOf(TextFieldValue(""))}
-    val db = DBHelper(context, null)
     Row(
         Modifier
             .padding(10.dp)) {
@@ -129,8 +145,9 @@ fun addTagButtons(){
                     var valMontant=montant.text.toString().toInt()
                     if(valMontant<0) Toast.makeText(context,"Montant incorrect",Toast.LENGTH_SHORT).show()
                     else{
-                        var tr=Transaction(descText.text, valMontant,list)
-                        db.addTransaction(tr)
+                        var tr=Transaction(0,0,descText.text,valMontant,now() ,list)
+                        viewModel.insert(tr)
+
                         list.clear()
                         tagText.text.removeRange(0,tagText.text.length)
                         descText.text.removeRange(0,tagText.text.length)
@@ -147,9 +164,9 @@ fun addTagButtons(){
     }
 }
 @Composable
-fun MainView(){
+fun MainView(viewModel: TransactionViewModel) {
     Column(){
-        addTagButtons()
+        addTagButtons(viewModel)
 
     }
 
