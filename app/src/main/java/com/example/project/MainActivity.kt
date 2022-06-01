@@ -143,7 +143,7 @@ fun addTagButtons(viewModel: PlutusApp) {
                     if(valMontant<0) Toast.makeText(context,"Montant incorrect",Toast.LENGTH_SHORT).show()
                     else{
                         var tr=Transaction(0,0,descText.text,valMontant,now() ,list)
-                        viewModel.repository.insert(tr)
+//                        viewModel.repository.insert(tr)
 
                         list.clear()
                         tagText.text.removeRange(0,tagText.text.length)

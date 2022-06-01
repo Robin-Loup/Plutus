@@ -1,6 +1,5 @@
 package com.example.project
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -16,10 +15,10 @@ interface TransactionDAO {
     fun getEveryTrFrom(id : Int): Flow<List<Transaction>>
 
     @Query("SELECT * FROM transactions")
-    fun getAllTr(): LiveData<List<Transaction>>
+    fun getAllTr(): Flow<List<Transaction>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertTr(transaction: Transaction)
+    suspend fun insertTr(transaction: Transaction)
 
     @Query("DELETE FROM transactions WHERE idTransaction= :id")
     suspend fun deleteTr(id :Int)
