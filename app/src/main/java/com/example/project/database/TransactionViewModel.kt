@@ -1,26 +1,34 @@
 
+import android.app.Application
 import androidx.lifecycle.*
 import com.example.project.Transaction
+import com.example.project.TransactionDAO
 import com.example.project.database.TransactionRepository
 import com.example.project.database.TransactionRoomDatabase
 import kotlinx.coroutines.launch
 
-class TransactionViewModel(private val repository: TransactionRepository) : ViewModel() {
+class TransactionViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
 
-    val allTransactions: LiveData<List<Transaction>> = repository.allTransactions.asLiveData()
+    val allTransactions: LiveData<List<Transaction>>
+    private var transactionDao : TransactionDAO = TransactionRoomDatabase.getDatabase(application).TransactionDao()
+
+    init{
+        allTransactions = transactionDao.getAllTr()
+    }
+
     fun insert(transaction: Transaction) = viewModelScope.launch {
-        repository.insert(transaction)
+        transactionDao.insertTr(transaction)
     }
 }
 
-class TransactionViewModelFactory(private val repository: TransactionRepository) : ViewModelProvider.Factory {
+class TransactionViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return TransactionViewModel(repository) as T
+            return TransactionViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
