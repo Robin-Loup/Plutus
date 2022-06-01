@@ -1,12 +1,12 @@
 package com.example.project
 
 import TransactionViewModel
-import android.content.Context
+import TransactionViewModelFactory
+import android.app.Application
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -17,29 +17,31 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project.ui.theme.ProjectTheme
-import java.time.LocalDateTime
 import java.time.LocalDateTime.now
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : ComponentActivity() {
     private val newActivityRequestCode = 1
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+//        var database = Room.databaseBuilder(this, TransactionRoomDatabase::class.java, "plutus.db").build()
+//        val repository by lazy { TransactionRepository(database.TransactionDao()) }
+//        var viewModel=TransactionViewModel(repository)
         setContent {
             var plutus=PlutusApp()
-//            private val viewModel : TransactionViewModel by viewModels{
-//
-//            }
             ProjectTheme {
+                CallDatabase()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainView(plutus)
+                    MainView( )
                     Row() {
                         //Greeting("Android")
                     }
@@ -48,16 +50,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-fun provide(context: Context) {
-
-
-}
+// Test function, directly adds into database test data
 @Composable
-fun addTagButtons(viewModel: PlutusApp) {
+fun CallDatabase(){
+    val context= LocalContext.current
+    val viewModel : TransactionViewModel = viewModel (factory = TransactionViewModelFactory(context.applicationContext as Application))
+    viewModel.insert(Transaction(0,0,"test",0, now().format(DateTimeFormatter.ofPattern("dd-MM-yy"))))
+}
+
+@Composable
+fun addTagButtons() {
+    val context= LocalContext.current
+    val viewModel : TransactionViewModel = viewModel (factory = TransactionViewModelFactory(context.applicationContext as Application))
+
     // Variables to create new transaction
     var list by remember { mutableStateOf(arrayListOf<Etiquette.Tag>()) }
-    val context=LocalContext.current
     var tagText by remember { mutableStateOf(TextFieldValue("")) }
     var descText by remember { mutableStateOf(TextFieldValue("")) }
     var montant by remember { mutableStateOf(TextFieldValue(""))}
@@ -142,14 +149,18 @@ fun addTagButtons(viewModel: PlutusApp) {
                     var valMontant=montant.text.toString().toInt()
                     if(valMontant<0) Toast.makeText(context,"Montant incorrect",Toast.LENGTH_SHORT).show()
                     else{
-                        var tr=Transaction(0,0,descText.text,valMontant,now() ,list)
-//                        viewModel.repository.insert(tr)
+                        /**
+                         * HERE WE ADD TRANSACTION INTO DATABASE
+                         */
 
+                        var tr=Transaction(0,0,descText.text,valMontant,now().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+                        viewModel.insert(tr)
+                        Toast.makeText(context,tr.toString(),Toast.LENGTH_SHORT).show()
                         list.clear()
                         tagText.text.removeRange(0,tagText.text.length)
-                        descText.text.removeRange(0,tagText.text.length)
-                        montant.text.removeRange(0,tagText.text.length)
-                        Toast.makeText(context,tr.toString(),Toast.LENGTH_SHORT).show()
+                        descText.text.removeRange(0,descText.text.length)
+                        montant.text.removeRange(0,montant.text.length)
+
                     }
 
                 }
@@ -161,9 +172,9 @@ fun addTagButtons(viewModel: PlutusApp) {
     }
 }
 @Composable
-fun MainView(viewModel: PlutusApp) {
+fun MainView() {
     Column(){
-        addTagButtons(viewModel)
+        addTagButtons()
 
     }
 
@@ -172,9 +183,9 @@ fun MainView(viewModel: PlutusApp) {
 }
 @Composable
 fun Greeting(name: String) {
-    var tr = Transaction(0,0,"test",10, LocalDateTime.now(),arrayListOf<Etiquette.Tag>(Etiquette.Tag.Food))
+//    var tr = Transaction(0,0,"test",10, now(),arrayListOf<Etiquette.Tag>(Etiquette.Tag.Food))
 
-    Text(text = "$tr")
+//    Text(text = "$tr")
 
 }
 

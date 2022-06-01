@@ -1,4 +1,5 @@
 
+import android.app.Application
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.*
 import com.example.project.MainActivity
@@ -7,24 +8,34 @@ import com.example.project.Transaction
 import com.example.project.database.TransactionRepository
 import com.example.project.database.TransactionRoomDatabase
 import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 
-class TransactionViewModel(private val repository: TransactionRepository) : ViewModel() {
+class TransactionViewModel(application : Application) : AndroidViewModel(application) {
     /**
      * Launching a new coroutine to insert the data in a non-blocking way
      */
-    val allTransactions: LiveData<List<Transaction>> = repository.allTransactions.asLiveData()
+    private val readAllData: LiveData<List<Transaction>>
+    private val repository : TransactionRepository
+
+    init{
+        val dao=TransactionRoomDatabase.getDatabase(application).TransactionDao()
+        repository= TransactionRepository((dao))
+        readAllData=repository.allTransactions
+    }
+
     fun insert(transaction: Transaction) = viewModelScope.launch {
         repository.insert(transaction)
     }
 
 }
 
-class TransactionViewModelFactory(private val repository: TransactionRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TransactionViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return TransactionViewModel(repository) as T
+class TransactionViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        @Suppress("UNCHECKED_CAST")
+        if(modelClass.isAssignableFrom(TransactionViewModel::class.java)){
+            return TransactionViewModel(application) as T
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        throw IllegalArgumentException("Unknown viewmodel class")
+
     }
 }
