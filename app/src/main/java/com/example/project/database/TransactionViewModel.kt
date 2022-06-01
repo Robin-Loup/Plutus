@@ -1,9 +1,6 @@
 
 import android.app.Application
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.*
-import com.example.project.MainActivity
-import com.example.project.PlutusApp
 import com.example.project.Transaction
 import com.example.project.database.TransactionRepository
 import com.example.project.database.TransactionRoomDatabase
@@ -26,7 +23,12 @@ class TransactionViewModel(application : Application) : AndroidViewModel(applica
     fun insert(transaction: Transaction) = viewModelScope.launch {
         repository.insert(transaction)
     }
-
+    fun getAll() : LiveData<List<Transaction>> {
+        return repository.getAll()
+    }
+    fun dropAll() = viewModelScope.launch {
+        repository.dropAll()
+    }
 }
 
 class TransactionViewModelFactory(private val application: Application) : ViewModelProvider.Factory {

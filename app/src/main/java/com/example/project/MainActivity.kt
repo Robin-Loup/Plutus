@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,9 +34,9 @@ class MainActivity : ComponentActivity() {
 //        val repository by lazy { TransactionRepository(database.TransactionDao()) }
 //        var viewModel=TransactionViewModel(repository)
         setContent {
-            var plutus=PlutusApp()
+//            CallDatabase()
+//            var plutus=PlutusApp()
             ProjectTheme {
-                CallDatabase()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -55,7 +56,17 @@ class MainActivity : ComponentActivity() {
 fun CallDatabase(){
     val context= LocalContext.current
     val viewModel : TransactionViewModel = viewModel (factory = TransactionViewModelFactory(context.applicationContext as Application))
-    viewModel.insert(Transaction(0,0,"test",0, now().format(DateTimeFormatter.ofPattern("dd-MM-yy"))))
+//    viewModel.dropAll()
+//    viewModel.insert(Transaction(0,0,"test",0, now().format(DateTimeFormatter.ofPattern("dd-MM-yy"))))
+    val a =viewModel.getAll().observeAsState(listOf()).value
+    Column() {
+        for(e in a){
+            Card() {
+                Text(text = e.toString())
+            }
+        }
+    }
+    println(a)
 }
 
 @Composable
@@ -155,12 +166,11 @@ fun addTagButtons() {
 
                         var tr=Transaction(0,0,descText.text,valMontant,now().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
                         viewModel.insert(tr)
-                        Toast.makeText(context,tr.toString(),Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(context,tr.toString(),Toast.LENGTH_SHORT).show()
                         list.clear()
                         tagText.text.removeRange(0,tagText.text.length)
                         descText.text.removeRange(0,descText.text.length)
                         montant.text.removeRange(0,montant.text.length)
-
                     }
 
                 }
@@ -169,6 +179,9 @@ fun addTagButtons() {
             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text("Add Transaction")
         }
+    }
+    Row {
+        CallDatabase()
     }
 }
 @Composable

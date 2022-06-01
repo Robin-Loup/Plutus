@@ -19,4 +19,10 @@ class TransactionRepository(private val transactionDAO: TransactionDAO) {
     suspend fun insert(transaction: Transaction) {
         transactionDAO.insertTr(transaction)
     }
+    fun getAll() : LiveData<List<Transaction>> {
+        return transactionDAO.getAllTr()
+    }
+    suspend fun dropAll() {
+        transactionDAO.deleteAll()
+    }
 }
