@@ -1,7 +1,7 @@
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.example.project.Transaction
+import com.example.project.Transaction.Transaction
 import com.example.project.database.TransactionRepository
 import com.example.project.database.TransactionRoomDatabase
 import kotlinx.coroutines.launch

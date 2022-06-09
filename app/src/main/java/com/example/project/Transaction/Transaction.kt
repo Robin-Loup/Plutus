@@ -1,4 +1,4 @@
-package com.example.project
+package com.example.project.Transaction
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity

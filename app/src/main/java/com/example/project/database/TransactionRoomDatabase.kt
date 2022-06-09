@@ -5,9 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.project.Etiquette
-import com.example.project.Transaction
-import com.example.project.TransactionDAO
+import com.example.project.Transaction.Transaction
+import com.example.project.Transaction.TransactionDAO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime.now

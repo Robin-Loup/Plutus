@@ -19,6 +19,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.project.Etiquette.Etiquette
+import com.example.project.Transaction.Transaction
 import com.example.project.ui.theme.ProjectTheme
 import java.time.LocalDateTime.now
 import java.time.format.DateTimeFormatter
@@ -164,7 +166,7 @@ fun addTagButtons() {
                          * HERE WE ADD TRANSACTION INTO DATABASE
                          */
 
-                        var tr=Transaction(0,0,descText.text,valMontant,now().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
+                        var tr= Transaction(0,0,descText.text,valMontant,now().format(DateTimeFormatter.ofPattern("dd-MM-yy")))
                         viewModel.insert(tr)
 //                        Toast.makeText(context,tr.toString(),Toast.LENGTH_SHORT).show()
                         list.clear()

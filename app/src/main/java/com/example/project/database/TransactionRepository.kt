@@ -2,9 +2,8 @@ package com.example.project.database
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.example.project.Transaction
-import com.example.project.TransactionDAO
-import kotlinx.coroutines.flow.Flow
+import com.example.project.Transaction.Transaction
+import com.example.project.Transaction.TransactionDAO
 
 // Declares the DAO as a private property in the constructor. Pass in the DAO
 // instead of the whole database, because you only need access to the DAO

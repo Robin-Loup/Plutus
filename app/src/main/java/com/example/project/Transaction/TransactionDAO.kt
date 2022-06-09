@@ -1,8 +1,7 @@
-package com.example.project
+package com.example.project.Transaction
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 /**
  * https://developer.android.com/codelabs/android-room-with-a-view-kotlin?hl=fr#5
@@ -28,5 +27,5 @@ interface TransactionDAO {
     suspend fun deleteAll()
 
     @Update(entity = Transaction::class, onConflict = OnConflictStrategy.REPLACE)
-    fun updateTr(transaction:Transaction)
+    fun updateTr(transaction: Transaction)
 }
